@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="text-purple-900 text-2xl">
+    <div className="text-white text-2xl bg-black/50 p-6 rounded-sm	">
       <h1 className="pb-6">Retina Movie house </h1>
       <div className="flex justify-center">
         <Link href="/categories">

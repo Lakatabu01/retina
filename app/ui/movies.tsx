@@ -1,63 +1,36 @@
 "use client";
-import { useEffect, useState } from "react";
-import Items from "../lib/types";
-import Image from "next/image";
+import MovieFetch from "./movieFetch";
+import { Suspense } from "react";
+import MovieSkeleton from "./movie_Skeleton";
+import Link from "next/link";
 
 function Movies() {
-  const url =
-    "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc";
-
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNTBlZWY3ZjA4YTc3MGNiNmYyOWZkOThlNjBhZTU0YyIsInN1YiI6IjY1NDgzNjVjMWFjMjkyN2IzMDI4NTQ3YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OqiHCCXrEOCeUpjeU-5jIoQS31__wF_qthw1gNifq60",
-    },
-  };
-
-  const [movies, setMovies] = useState<object[]>([]);
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const data = await fetch(url, options);
-        const response = await data.json();
-        setMovies(response.results);
-        console.log(response.results);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchMovies();
-  }, []);
-
   return (
     //Populate the component with data from fetched API
     <div>
-      <div className="flex justify-center items-center py-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+      <div className=" relative flex justify-center items-center py-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
         {" "}
+        <div className="absolute left-2">
+          <Link href="/">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-6 h-6">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+              />
+            </svg>
+          </Link>
+        </div>
         <h1>Top 20 movies in Nigeria today</h1>
       </div>
 
-      <div className="grid sm:grid-cols-3 my-8 px-0 gap-2 grid-cols-2">
-        {movies.map((item: Items) => (
-          <div
-            key={item.id}
-            className="relative flex flex-col items-center hover:border-solid hover:border-2 hover:border-purple-800 cursor-pointer">
-            <Image
-              className="h-auto w-auto"
-              alt=""
-              src={"http://image.tmdb.org/t/p/w500/" + item.backdrop_path}
-              width={800}
-              height={800}
-            />
-            <div className="absolute bottom-0 px-0 text-base sm:text-s">
-              {item.title}
-            </div>
-          </div>
-        ))}
-      </div>
+      <Suspense fallback={<MovieSkeleton />}>{<MovieFetch />}</Suspense>
     </div>
   );
 }
