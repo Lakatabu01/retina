@@ -35,18 +35,26 @@ function Movies() {
   return (
     //Populate the component with data from fetched API
     <div>
-      <h1>movies</h1>
+      <div className="flex justify-center items-center py-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+        {" "}
+        <h1>Top 20 movies in Nigeria today</h1>
+      </div>
 
-      <div>
+      <div className="grid sm:grid-cols-3 my-8 px-0 gap-2 grid-cols-2">
         {movies.map((item: Items) => (
-          <div key={item.id}>
+          <div
+            key={item.id}
+            className="relative flex flex-col items-center hover:border-solid hover:border-2 hover:border-purple-800 cursor-pointer">
             <Image
+              className="h-auto w-auto"
               alt=""
               src={"http://image.tmdb.org/t/p/w500/" + item.backdrop_path}
-              width={100}
-              height={100}
+              width={800}
+              height={800}
             />
-            <div>{item.title}</div>
+            <div className="absolute bottom-0 px-0 text-base sm:text-s">
+              {item.title}
+            </div>
           </div>
         ))}
       </div>
